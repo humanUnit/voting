@@ -1,14 +1,15 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
-
-from .forms import BirthdayVoteForm, BirthdayNoteForm, AuthenticationForm, RegistrationForm
+from django.shortcuts import render
+from django.urls import reverse
+from django.contrib.auth import logout
+from .forms import BirthdayVoteForm, BirthdayNoteForm
 
 
 def get_voting(request):
     if request.method == 'POST':
         form = BirthdayVoteForm(request.POST)
         if form.is_valid():
-            return HttpResponseRedirect('/notes/')
+            return HttpResponseRedirect(reverse('polls:notes'))
     else:
         form = BirthdayVoteForm()
     return render(request, 'voting_form.html', {'form': form})
@@ -19,7 +20,7 @@ def get_notes(request):
         form = BirthdayNoteForm(request.POST)
 
         if form.is_valid():
-            return HttpResponseRedirect('/thank_you/')
+            return HttpResponseRedirect(reverse('polls:thank_you'))
 
     else:
         form = BirthdayNoteForm()
@@ -27,30 +28,12 @@ def get_notes(request):
 
 
 def get_thank_you_page(request):
-    if request.method == 'POST':
-        return HttpResponseRedirect('')
     return render(request, 'thank_you_page.html')
 
 
-def get_login(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request.POST)
-
-        if form.is_valid():
-            return HttpResponseRedirect('/registration/')
-
-    else:
-        form = AuthenticationForm()
-    return render(request, 'login_form.html', {'form': form})
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('polls:login'))
 
 
-def get_registration(request):
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
 
-        if form.is_valid():
-            return HttpResponseRedirect('/voting/')
-
-    else:
-        form = RegistrationForm()
-    return render(request, 'registration_form.html', {'form': form})

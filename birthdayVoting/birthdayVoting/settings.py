@@ -118,3 +118,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# email settings
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 8000
+EMAIL_HOST_USER = 'kelembet'
+EMAIL_HOST_PASSWORD = 'tyz66666'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'Kelembet Team <kelembet@example.com>'
+
+# url to redirect after successful login
+LOGIN_REDIRECT_URL = '/polls/voting/'
+
+ACCOUNT_ACTIVATION_DAYS = 1

@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from polls.models import Notes, Choices, Login, CreateAccount
+from polls.models import Notes, Choices, User
 
 
 class BirthdayVoteForm(ModelForm):
@@ -16,16 +16,10 @@ class BirthdayNoteForm(ModelForm):
         fields = ('notes_field',)
 
 
-class AuthenticationForm(ModelForm):
+class UserRegistrationForm(ModelForm):
     class Meta:
-        model = Login
-        fields = ('email_address', 'password')
-        widgets = {'remember_me_on_this_computer': forms.CheckboxInput()}
-
-
-class RegistrationForm(ModelForm):
-    class Meta:
-        model = CreateAccount
-        fields = ('name', 'surname', 'email_address', 'password', 'confirm_password')
+        model = User
+        fields = ('username', 'email', 'password')
+        widgets = {'password': forms.PasswordInput()}
 
 

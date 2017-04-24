@@ -5,7 +5,8 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     url(r'^polls/', include('polls.urls')),
     url(r'^password_reset/$',
-        auth_views.PasswordResetView.as_view(email_template_name='registration/password_reset_email.html')),
+        auth_views.PasswordResetView.as_view(email_template_name='registration/password_reset_email.html'),
+        name='password_reset'),
     url('^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         auth_views.password_reset_confirm,
         name='password_reset_confirm'),

@@ -1,6 +1,8 @@
+from django.contrib.auth.forms import UserCreationForm, UsernameField
+from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
-from polls.models import Notes, Choices, User
+from polls.models import Notes, Choices
 
 
 class BirthdayVoteForm(ModelForm):
@@ -16,10 +18,10 @@ class BirthdayNoteForm(ModelForm):
         fields = ('notes_field',)
 
 
-class UserRegistrationForm(ModelForm):
+class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
-        widgets = {'password': forms.PasswordInput()}
+        fields = ("username", "email")
+        field_classes = {'username': UsernameField}
 
 

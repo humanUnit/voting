@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Thank you page</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
     <h1>Thank you for your voting!</h1>
-    <button type="submit" class="btn btn-default">Log out</button>
-</body>
-</html>
+    <a href="{% url 'polls:login' %}"> Logout</a>
+{% endblock %}
+
+

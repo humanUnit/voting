@@ -130,7 +130,9 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Kelembet Team <kelembet@example.com>'
 
 # url to redirect after successful login
+LOGIN_URL = '/polls/login/'
 LOGIN_REDIRECT_URL = '/polls/voting/'
+LOGOUT_REDIRECT_URL = '/polls/login/'
 
 ACCOUNT_ACTIVATION_DAYS = 1
 

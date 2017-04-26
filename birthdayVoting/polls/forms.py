@@ -21,7 +21,7 @@ class BirthdayNoteForm(ModelForm):
 class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ("username", "email")
+        fields = ("username", "email",)
         field_classes = {'username': UsernameField}
 
 

@@ -1,6 +1,6 @@
 CHOICES = (
-    (1, 'Your colleges organize party for you'),
-    (2, 'Your colleges make present and you make party'),
-    (3, 'Receive money on my birthday and organize party by my self'),
-    (4, 'Organize a party by my self without the present from my colleagues'),
+    (1, 'I would like if my colleges organize party for me'),
+    (2, 'I would like if my colleges make present and I make party'),
+    (3, 'I would like if my colleges give me money on my birthday and I will organize party by my self'),
+    (4, 'I would like organize a party by my self without the present from my colleagues'),
 )

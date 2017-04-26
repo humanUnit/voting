@@ -1,7 +1,34 @@
-<form action="{% url 'polls:voting' %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Vote!" />
-</form>
+{% extends 'base.html' %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/login.css" type="text/css" media="screen, print" />
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div style="margin-top:10px" class="col-md-8 col-md-offset-11">
+        <p style="color:#337ab7">{{ user.username }}</p>
+</div>
+<div class="col-md-5 col-md-offset-11">
+        <a style="color:#337ab7" href="{% url 'polls:login'%}">Logout</a>
+</div>
+<div style="margin-top:5%;" class="col-md-6 col-md-offset-3">
+        <h3 class="text-center" style="margin-top:10%;">Please choose one of the offered options</h3>
+        <form class="col-md-4 col-md-offset-0" style="width:130%; margin-top:10%;" action="{% url 'polls:voting' %}" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            {{ field }}
+            {% endfor %}
+            <div style="margin-top:10px" class="form-group">
+                <div style="margin-top:40px" class="col-sm-10 col-md-offset-3">
+                    <button class="btn btn-primary" type="submit" style="width:30%;">Vote!</button>
+                </div>
+            </div>
+        </form>
+</div>
+    {% else %}
+    {% endif %}
+{% endblock %}
 
 

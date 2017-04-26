@@ -17,7 +17,7 @@
                         {% for field in form %}
                         {{ field.errors }}
                         {{ field.label_tag }}
-                        <input id="{{ field.name }}" type="password" class="form-control" name="{{ field.name }}">
+                        <input id="{{ field.name }}" type="text" class="form-control" name="{{ field.name }}">
                         {% endfor %}
                         <div style="margin-top:10px" class="form-group">
                             <div style="margin-top:20px" class="col-sm-9 col-md-offset-4">

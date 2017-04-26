@@ -1,5 +1,37 @@
-<form action="{% url 'polls:notes' %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit" />
-</form>
+{% extends 'base.html' %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/login.css" type="text/css" media="screen, print" />
+{% endblock %}
+
+{% block content %}
+        <div style="margin-top:10px" class="col-md-8 col-md-offset-11">
+            <p style="color:#337ab7">{{ user.username }}</p>
+        </div>
+        <div class="col-md-5 col-md-offset-11">
+            <a style="color:#337ab7" href="{% url 'polls:login'%}">Logout</a>
+        </div>
+        <div style="margin-top:5%;" class="col-md-6 col-md-offset-3">
+        <h3 class="text-center" style="margin-top:10%;">Please add notes if you have any suggestion about your choice</h3>
+            <form action="{% url 'polls:notes' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ next }}" />
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                {% csrf_token %}
+                                {% for field in form %}
+                                {{ field.errors }}
+                                {{ field.label_tag }}
+                                <textarea id="{{ field.name }}" class="form-control input-sm" name="{{ field.name }}"></textarea>
+                                {% endfor %}
+                            </div>
+                            <div style="margin-top:10px" class="form-group">
+                                 <div style="margin-top:40px" class="col-sm-9 col-md-offset-4">
+                                     <button class="btn btn-primary" type="submit" style="width:30%;">Submit</button>
+                                 </div>
+                            </div>
+                        </div>
+            </form>
+        </div>
+{% endblock %}

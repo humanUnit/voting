@@ -5,6 +5,7 @@ from polls.choices import *
 
 class Notes(models.Model):
     notes_field = models.TextField('notes field', max_length=3000)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 
 
 class Choices(models.Model):

@@ -7,11 +7,11 @@
 
 {% block content %}
     <h1 class="text-center" style="margin-top:10%;">Thank you for your voting {{ user.username }}!</h1>
-    <p class="text-center">(If you are seeing this page, it is mean you already made your choice and notifications were sent to all members of Ukraine office)</p>
+    <p class="text-center" style="color:#337ab7">(If you are seeing this page, it is mean you already made your choice and notifications were sent to all members of Ukraine's office)</p>
     <form class="col-md-7 col-md-offset-1" style="width:100%; margin-top:10%;" action="{% url 'polls:login' %}" method="post">
     {% csrf_token %}
     <div class="form-group">
-        <div style="margin-top:40px" class="col-sm-8 col-md-offset-4">
+        <div style="margin-top:20px" class="col-sm-8 col-md-offset-4">
             <a class="btn btn-primary" href="{% url 'polls:logout' %}" style="width:20%;">Logout</a>
         </div>
     </div>

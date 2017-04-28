@@ -13,8 +13,9 @@
             <a style="color:#337ab7" href="{% url 'polls:logout'%}">Logout</a>
         </div>
         <div style="margin-top:5%;" class="col-md-6 col-md-offset-3">
-        <h3 class="text-center" style="margin-top:10%;">Please add notes if you have any suggestion about your choice</h3>
-            <form action="{% url 'polls:notes' %}" method="post">
+        <h3 class="text-center" style="margin-top:5%;">Please add notes if you have any suggestion about your choice</h3>
+            <p class="text-center" style="color:#337ab7">(Here you can add theme of your party or write which gift you prefer to receive on your birthday)</p>
+            <form action="{% url 'polls:notes' %}" method="post" style="margin-top:10%;">
                 {% csrf_token %}
                 <input type="hidden" name="next" value="{{ next }}" />
                         <div class="col-md-12">

@@ -25,7 +25,7 @@ SECRET_KEY = 'ygf^gmgnbs6w-u#&a27^4l-!zty1huk%**75a+c3zs34r_wutd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -121,11 +121,11 @@ USE_TZ = True
 
 # email settings
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'localhost'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'postmaster@sandbox86f602a6e4d5411bb49318901c9e1ff5.mailgun.org'
-EMAIL_HOST_PASSWORD = '6402bc055623cc110d1219add8155599'
+EMAIL_HOST_USER = 'katyakelembet@gmail.com'
+EMAIL_HOST_PASSWORD = '12345678'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Kelembet Team <kelembet@example.com>'
 

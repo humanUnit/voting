@@ -6,15 +6,16 @@
 {% endblock %}
 
 {% block content %}
-        <div style="margin-top:10px" class="col-md-8 col-md-offset-11">
+        <div style="margin-top:10px" class="col-md-8 col-md-offset-10">
             <p style="color:#337ab7">{{ user.username }}</p>
         </div>
-        <div class="col-md-5 col-md-offset-11">
+        <div class="col-md-5 col-md-offset-10">
             <a style="color:#337ab7" href="{% url 'polls:logout'%}">Logout</a>
         </div>
         <div style="margin-top:5%;" class="col-md-6 col-md-offset-3">
         <h3 class="text-center" style="margin-top:5%;">Please add notes if you have any suggestion about your choice</h3>
-            <p class="text-center" style="color:#337ab7">(Here you can add theme of your party or write which gift you prefer to receive on your birthday)</p>
+            <p class="text-center" style="color:#337ab7">(Here you can add theme of your party or write which gift you prefer to receive on your birthday,
+                also specify date and time.)</p>
             <form action="{% url 'polls:notes' %}" method="post" style="margin-top:10%;">
                 {% csrf_token %}
                 <input type="hidden" name="next" value="{{ next }}" />

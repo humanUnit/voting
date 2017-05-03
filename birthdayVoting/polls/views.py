@@ -1,6 +1,9 @@
+# coding=utf-8
 from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMessage
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.template.loader import get_template
 from django.urls import reverse
 
 from .models import Choices, Notes
@@ -35,6 +38,25 @@ def get_notes(request):
             user = request.user
             notes.user = user
             notes.save()
+
+            template = get_template('contact_template')
+            user = request.user
+            context = {
+                'contact_name': user.username,
+                'contact_email': user.email,
+                'choice': Choices.objects.get(user=user).get_choice_fields_display(),
+                'notes': Notes.objects.get(user=user).notes_field if Notes.objects.filter(
+                    user=user).exists() else 'User left field empty',
+            }
+            content = template.render(context, request)
+            email = EmailMessage(
+                "Someone's birthday soon",
+                content,
+                "Birthday voting" + '',
+                [user.email, user.email, user.email],
+                headers={'Reply-To': 'katyakelembet@gmail.com'}
+            )
+            email.send()
             return HttpResponseRedirect(reverse('polls:thank_you'))
     else:
         form = BirthdayNoteForm()
@@ -42,11 +64,5 @@ def get_notes(request):
 
 
 @login_required
-def get_thank_you_page(request):
+def get_thank_you_page(request, ):
     return render(request, 'thank_you_page.html')
-
-
-
-
-
-

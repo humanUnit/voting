@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm, UsernameField
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
-from polls.models import Notes, Choices
+from .models import Notes, Choices
 
 
 class BirthdayVoteForm(ModelForm):

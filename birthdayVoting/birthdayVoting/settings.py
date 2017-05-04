@@ -121,13 +121,12 @@ USE_TZ = True
 
 # email settings
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST = 'localhost'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'kelembetkate46@gmail.com'
+EMAIL_HOST_PASSWORD = 'tyz666666'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'katyakelembet@gmail.com'
-EMAIL_HOST_PASSWORD = '12345678'
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'Kelembet Team <kelembet@example.com>'
 
 # url to redirect after successful login
 LOGIN_URL = '/polls/login/'

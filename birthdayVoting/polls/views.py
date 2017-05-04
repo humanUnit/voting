@@ -53,7 +53,7 @@ def get_notes(request):
                 "Someone's birthday soon",
                 content,
                 "Birthday voting" + '',
-                [user.email, user.email, user.email],
+                to=['katyakelembet@gmail.com'],
                 headers={'Reply-To': 'katyakelembet@gmail.com'}
             )
             email.send()

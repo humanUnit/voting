@@ -17,8 +17,9 @@
                         {% for field in form %}
                         {{ field.errors }}
                         {{ field.label_tag }}
-                        <input id="{{ field.name }}" type="text" class="form-control" name="{{ field.name }}">
+                        <input id="{{ field.name }}" type="{{ field.field.widget.input_type }}" class="form-control" name="{{ field.name }}">
                         {% endfor %}
+                        <input type="hidden" name="next" id="id_next" value="{{ request.REQUEST.next }}" />
                         <div style="margin-top:10px" class="form-group">
                             <div style="margin-top:20px" class="col-sm-9 col-md-offset-4">
                                 <button class="btn btn-primary" type="submit" style="width:40%;">Register</button>

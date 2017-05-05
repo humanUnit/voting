@@ -5,9 +5,23 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template.loader import get_template
 from django.urls import reverse
-
+from django.contrib.auth import authenticate, login
 from .models import Choices, Notes
-from .forms import BirthdayVoteForm, BirthdayNoteForm
+from .forms import BirthdayVoteForm, BirthdayNoteForm, UserRegistrationForm
+
+
+def get_register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            new_user = form.save()
+            new_user.user = authenticate(username=form.cleaned_data['username'],
+                                         password=form.cleaned_data['password1'], )
+            login(request, new_user)
+            return HttpResponseRedirect(reverse('polls:voting'))
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'registration/register.html', {'form': form})
 
 
 @login_required

@@ -11,6 +11,9 @@ urlpatterns = [
     url(r'^register/', views.get_register, name='register'),
 
     url(r'^voting/$', views.get_voting, name='voting'),
+    url(r'^choice_made/$', views.get_choices, name='choice_made'),
+
     url(r'^notes/$', views.get_notes, name='notes'),
+
     url(r'^thank_you/$', views.get_thank_you_page, name='thank_you')
 ]

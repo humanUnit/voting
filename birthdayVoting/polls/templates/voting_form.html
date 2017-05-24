@@ -3,22 +3,37 @@
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/login.css" type="text/css" media="screen, print" />
+     <style>
+        .choices_list ul{list-style:none}
+    </style>
 {% endblock %}
 
 {% block content %}
-<div style="margin-top:10px" class="col-md-8 col-md-offset-10">
-        <p style="color:#337ab7">{{ user.username }}</p>
-</div>
-<div class="col-md-5 col-md-offset-10">
-        <a style="color:#337ab7" href="{% url 'polls:logout'%}">Logout</a>
-</div>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Birthday Voting</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="{% url 'polls:voting'%}">Choices</a></li>
+      <li><a href="{% url 'polls:notes'%}">Notes</a></li>
+      <li><a href="#">Admin</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">{{ user.username }}</a></li>
+      <li><a href="{% url 'polls:logout'%}">Logout</a></li>
+    </ul>
+  </div>
+</nav>
 <div style="margin-top:5%;" class="col-md-6 col-md-offset-3">
-        <h3 class="text-center" style="margin-top:10%;">Please choose one of the offered options</h3>
+        <h3 class="text-center" style="margin-top:5%;">Please choose one of the offered options</h3>
         <form class="col-md-4 col-md-offset-0" style="width:130%; margin-top:10%;" action="{% url 'polls:voting' %}" method="post">
             {% csrf_token %}
-            {% for field in form %}
-            {{ field }}
-            {% endfor %}
+            <div class="choices_list">
+                {% for field in form %}
+                {{ field }}
+                {% endfor %}
+            </div>
             <div style="margin-top:10px" class="form-group">
                 <div style="margin-top:40px" class="col-sm-10 col-md-offset-3">
                     <button class="btn btn-primary" type="submit" style="width:30%;">Vote!</button>

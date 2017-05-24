@@ -27,7 +27,7 @@ def get_register(request):
 @login_required
 def get_voting(request):
     if Choices.objects.filter(user=request.user).exists():
-        return HttpResponseRedirect(reverse('polls:notes'))
+        return HttpResponseRedirect(reverse('polls:choice_made'))
     if request.method == 'POST':
         form = BirthdayVoteForm(request.POST)
         if form.is_valid():
@@ -39,6 +39,17 @@ def get_voting(request):
     else:
         form = BirthdayVoteForm()
     return render(request, 'voting_form.html', {'form': form})
+
+
+@login_required
+def get_choices(request):
+    if request.method == 'POST':
+        form = BirthdayVoteForm(request.POST)
+        if form.is_valid():
+            return HttpResponseRedirect(reverse('polls:notes'))
+    else:
+        form = BirthdayVoteForm()
+        return render(request, 'choice_made.html', {'form': form})
 
 
 @login_required

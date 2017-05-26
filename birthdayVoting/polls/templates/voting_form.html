@@ -4,7 +4,27 @@
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/login.css" type="text/css" media="screen, print" />
      <style>
-        .choices_list ul{list-style:none}
+        .choices_list ul{list-style:none;
+        color:#0C3C26;}
+        body {
+        background-color:white;
+        }
+        .btn-primary {
+                color: #fff;
+                background-color: #44B78B;
+                border-color: #fff;
+                }
+        .nav{background-color: #0C3C26;
+         margin: 0 auto;}
+        .container-fluid {background-color: #0C3C26;}
+        .navbar-header div{background-color: #0C3C26;}
+        .navbar-default .navbar-nav > .active > a{
+         background-color: #0C3C26;
+         }
+         label{
+             font-weight: normal;
+             color: #44B78B;
+         }
     </style>
 {% endblock %}
 
@@ -12,21 +32,22 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Birthday Voting</a>
+      <a class="navbar-brand" style="color:#fff" href="#">Birthday Voting</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="active"><a href="{% url 'polls:voting'%}">Choices</a></li>
-      <li><a href="{% url 'polls:notes'%}">Notes</a></li>
-      <li><a href="#">Admin</a></li>
+      <li class="active"><a style="color:#44B78B" href="{% url 'polls:voting'%}">Voting</a></li>
+      <li><a href="{% url 'polls:notes'%}" style="color:#fff">Notes</a></li>
+      <li><a href="#" style="color:#fff">Admin</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="#">{{ user.username }}</a></li>
-      <li><a href="{% url 'polls:logout'%}">Logout</a></li>
+      <li><a href="#" style="color:#fff">{{ user.username }}</a></li>
+      <li><a href="{% url 'polls:logout'%} " style="color:#fff">Logout</a></li>
     </ul>
   </div>
 </nav>
+</div>
 <div style="margin-top:5%;" class="col-md-6 col-md-offset-3">
-        <h3 class="text-center" style="margin-top:5%;">Please choose one of the offered options</h3>
+        <h3 class="text-center" style="margin-top:5%; color:#0C3C26;">Please choose one of the offered options</h3>
         <form class="col-md-4 col-md-offset-0" style="width:130%; margin-top:10%;" action="{% url 'polls:voting' %}" method="post">
             {% csrf_token %}
             <div class="choices_list">

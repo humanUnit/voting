@@ -56,6 +56,8 @@ def get_choices(request):
 def get_notes(request):
     if Notes.objects.filter(user=request.user).exists():
         return HttpResponseRedirect(reverse('polls:thank_you'))
+    if not Choices.objects.filter(user=request.user).exists():
+        return HttpResponseRedirect(reverse('polls:voting'))
     if request.method == 'POST':
         form = BirthdayNoteForm(request.POST)
         if form.is_valid():
@@ -63,7 +65,6 @@ def get_notes(request):
             user = request.user
             notes.user = user
             notes.save()
-
             template = get_template('contact_template')
             user = request.user
             context = {

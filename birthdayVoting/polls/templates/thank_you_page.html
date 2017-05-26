@@ -3,25 +3,44 @@
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/login.css" type="text/css" media="screen, print" />
+<style>
+        .choices_list ul{list-style:none;
+        color:#0C3C26;}
+        body {
+        background-color:white;
+        }
+        .btn-primary {
+                color: #fff;
+                background-color: #44B78B;
+                border-color: #fff;
+                }
+        .nav{background-color: #0C3C26;
+         margin: 0 auto;}
+        .container-fluid {background-color: #0C3C26;}
+        .navbar-header div{background-color: #0C3C26;}
+        .navbar-default .navbar-nav > .active > a{
+         background-color: #0C3C26;
+         }
+    </style>
 {% endblock %}
 
 {% block content %}
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Birthday Voting</a>
+      <a class="navbar-brand" href="#" style="color:#fff;">Birthday Voting</a>
     </div>
      <ul class="nav navbar-nav">
-      <li><a href="#">Admin</a></li>
+      <li><a href="#" style="color:#fff;">Admin</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="#">{{ user.username }}</a></li>
-      <li><a href="{% url 'polls:logout'%}">Logout</a></li>
+      <li><a href="#" style="color:#fff;">{{ user.username }}</a></li>
+      <li><a href="{% url 'polls:logout'%}" style="color:#fff;">Logout</a></li>
     </ul>
   </div>
 </nav>
-    <h1 class="text-center" style="margin-top:10%;">Thank you for your voting {{ user.username }}!</h1>
-    <p class="text-center" style="color:#337ab7">(If you are seeing this page, it is mean you already made your choice and notifications will sent to all members of Ukraine's office)</p>
+    <h1 class="text-center" style="margin-top:10%; color:#0C3C26;">Thank you for your voting {{ user.username }}!</h1>
+    <p class="text-center" style="color:#44B78B">(If you are seeing this page, it is mean you already made your choice and notifications will sent to all members of Ukraine's office)</p>
     <form class="col-md-7 col-md-offset-1" style="width:100%; margin-top:10%;" action="{% url 'polls:login' %}" method="post">
     {% csrf_token %}
     <div class="form-group">

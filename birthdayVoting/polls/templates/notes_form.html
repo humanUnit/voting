@@ -3,28 +3,52 @@
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/login.css" type="text/css" media="screen, print" />
+    <style>
+        .choices_list ul{list-style:none;
+        color:#0C3C26;}
+        body {
+        background-color:white;
+        }
+        .btn-primary {
+                color: #fff;
+                background-color: #44B78B;
+                border-color: #fff;
+                }
+        .nav{background-color: #0C3C26;}
+        .container-fluid {background-color: #0C3C26;}
+        .navbar-header div{background-color: #0C3C26;}
+        .navbar-default .navbar-nav > .active > a{
+         background-color: #0C3C26;
+         }
+         element.style {
+         color: #0C3C26;
+         }
+         label {
+         color: 0C3C26;
+         }
+    </style>
 {% endblock %}
 
 {% block content %}
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Birthday Voting</a>
+      <a class="navbar-brand" style="color:#fff" href="#">Birthday Voting</a>
     </div>
     <ul class="nav navbar-nav">
-      <li><a href="{% url 'polls:voting'%}">Choices</a></li>
-      <li class="active"><a href="{% url 'polls:notes'%}">Notes</a></li>
-      <li><a href="#">Admin</a></li>
+      <li><a style="color:#fff" href="{% url 'polls:voting'%}">Voting</a></li>
+      <li class="active"><a style="color:#44B78B" href="{% url 'polls:notes'%}" style="color:#fff">Notes</a></li>
+      <li><a href="#" style="color:#fff">Admin</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="#">{{ user.username }}</a></li>
-      <li><a href="{% url 'polls:logout'%}">Logout</a></li>
+      <li><a href="#" style="color:#fff">{{ user.username }}</a></li>
+      <li><a href="{% url 'polls:logout'%} " style="color:#fff">Logout</a></li>
     </ul>
   </div>
 </nav>
         <div style="margin-top:5%;" class="col-md-6 col-md-offset-3">
-        <h3 class="text-center" style="margin-top:5%;">Please add notes if you have any suggestion about your choice</h3>
-            <p class="text-center" style="color:#337ab7">(Here you can add theme of your party or write which gift you prefer to receive on your birthday,
+        <h3 class="text-center" style="margin-top:5%; color:#0C3C26;">Please add notes if you have any suggestion about your choice</h3>
+            <p class="text-center" style="color:#44B78B">(Here you can add theme of your party or write which gift you prefer to receive on your birthday,
                 also specify date and time.)</p>
             <form action="{% url 'polls:notes' %}" method="post" style="margin-top:10%;">
                 {% csrf_token %}
@@ -34,7 +58,6 @@
                                 {% csrf_token %}
                                 {% for field in form %}
                                 {{ field.errors }}
-                                {{ field.label_tag }}
                                 <textarea id="{{ field.name }}" class="form-control input-sm" name="{{ field.name }}"></textarea>
                                 {% endfor %}
                             </div>

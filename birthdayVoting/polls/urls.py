@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^choice_made/$', views.get_choices, name='choice_made'),
 
     url(r'^notes/$', views.get_notes, name='notes'),
+    url(r'^notes_made/$', views.get_note, name='notes_made'),
 
     url(r'^thank_you/$', views.get_thank_you_page, name='thank_you')
 ]

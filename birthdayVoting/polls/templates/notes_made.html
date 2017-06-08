@@ -34,8 +34,11 @@
       <li><a href="#" style="color:#fff">Admin</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="#" style="color:#fff">{{ user.username }}</a></li>
-      <li><a href="{% url 'polls:logout'%}" style="color:#fff">Logout</a></li>
+      <li><a href="{% url 'polls:profile'%}" style="color:#fff">{{ user.username }}</a></li>
+       <li><a href="{% url 'polls:logout'%} ">
+      <i class="glyphicon glyphicon-log-out" title="Log out" style="color:#fff">
+      </i>
+      </a>
     </ul>
   </div>
 </nav>

@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm, UsernameField
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
-from .models import Notes, Choices
+from .models import Notes, Choices, Profile
 
 
 class BirthdayVoteForm(ModelForm):
@@ -25,3 +25,13 @@ class UserRegistrationForm(UserCreationForm):
         field_classes = {'username': UsernameField}
 
 
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ("username", 'email',)
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('birth_date',)

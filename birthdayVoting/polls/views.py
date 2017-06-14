@@ -1,13 +1,15 @@
 # coding=utf-8
 from django.contrib.auth.decorators import login_required
+from django.core.checks import messages
 from django.core.mail import EmailMessage
+from django.db import transaction
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template.loader import get_template
 from django.urls import reverse
 from django.contrib.auth import authenticate, login
 from .models import Choices, Notes
-from .forms import BirthdayVoteForm, BirthdayNoteForm, UserRegistrationForm
+from .forms import BirthdayVoteForm, BirthdayNoteForm, UserRegistrationForm, UserForm, ProfileForm
 
 
 def get_register(request):
@@ -132,3 +134,25 @@ def get_note(request):
 @login_required
 def get_thank_you_page(request, ):
     return render(request, 'thank_you_page.html')
+
+
+@login_required
+@transaction.atomic
+def update_profile(request):
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.Info(request, 'Your profile was successfully updated!')
+            return redirect('polls:voting')
+        else:
+            messages.Error(request, 'Error')
+    else:
+        user_form = UserForm(instance=request.user)
+        profile_form = ProfileForm(instance=request.user.profile)
+    return render(request, 'profile.html', {
+        'user_form': user_form,
+        'profile_form': profile_form
+    })

@@ -2,6 +2,7 @@ from django.contrib.auth.forms import UserCreationForm, UsernameField
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
+
 from .models import Notes, Choices, Profile
 
 
@@ -35,3 +36,4 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ('birth_date',)
+        widgets = {'birth_date': forms.SelectDateWidget(years=range(1970, 2010))}

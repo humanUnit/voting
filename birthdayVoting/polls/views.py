@@ -146,7 +146,7 @@ def update_profile(request):
             user_form.save()
             profile_form.save()
             messages.Info(request, 'Your profile was successfully updated!')
-            return redirect('polls:voting')
+            return redirect('polls:profile')
         else:
             messages.Error(request, 'Error')
     else:

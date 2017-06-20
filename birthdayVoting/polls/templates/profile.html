@@ -4,9 +4,6 @@
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/login.css" type="text/css" media="screen, print" />
 <style>
-        .choices_list ul{
-        list-style:none;
-        color:#0C3C26;}
         body {
         color: #0C3C26;
         background-color:white;
@@ -41,9 +38,8 @@
         }
         .container {
             margin: 0 auto;
-            max-width: 1400px;
-            width: 2000px;
             padding-left: 6px;
+
         }
         .copy-banner h1 {
             font-size: 32px;
@@ -125,9 +121,31 @@
                                     </div>
                             </div>
                         {% endfor %}
-                      <div style="margin-top:10px" class="form-group">
-                            <div style="margin-top:20px" class="col-sm-12 col-md-offset-5">
-                                <button class="btn btn-primary" type="submit" style="width:10%; margin-top:120px">Save changes</button>
+                        {% if notes %}
+                        <div class="form-group">
+                             <li class="col-md-offset-1" style="margin-top:10px; list-style: none;">
+                                 {{notes}}
+                                 <a href="{% url 'polls:profile'%} ">
+                                    <i class="glyphicon glyphicon-remove" style="color:black">
+                                </i>
+                                 </a>
+                                 </li>
+                          </div>
+                         {% endif %}
+                        {% if choice %}
+                        <div class="form-group">
+                             <li class="col-md-offset-1" style="list-style: none">
+                                 {{choice}}
+                                 <a href="{% url 'polls:profile'%} ">
+                                     <i class="glyphicon glyphicon-remove" style="color:black">
+                                </i>
+                                 </a>
+                                 </li>
+                          </div>
+                        {% endif %}
+                      <div  class="form-group">
+                            <div style="margin-top:20px " class="col-md-offset-5">
+                                <button class="btn btn-primary" type="submit" style="margin-top:80px; width: 160px;">Save changes</button>
                             </div>
                         </div>
                     </form>

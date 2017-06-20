@@ -150,9 +150,48 @@ def update_profile(request):
         else:
             messages.Error(request, 'Error')
     else:
-        user_form = UserForm(instance=request.user)
-        profile_form = ProfileForm(instance=request.user.profile)
-    return render(request, 'profile.html', {
-        'user_form': user_form,
-        'profile_form': profile_form
-    })
+        if Choices.objects.filter(user=request.user).exists() and Notes.objects.filter(user=request.user).exists():
+            user_form = UserForm(instance=request.user)
+            profile_form = ProfileForm(instance=request.user.profile)
+            user = request.user
+            choice = Choices.objects.get(user=user)
+            notes = Notes.objects.get(user=user)
+            Choices.objects.all().delete()
+            Notes.objects.all().delete()
+            return render(request, 'profile.html', {
+                'choice': choice,
+                'notes': notes,
+                'user_form': user_form,
+                'profile_form': profile_form,
+            })
+
+        if Notes.objects.filter(user=request.user).exists():
+            user_form = UserForm(instance=request.user)
+            profile_form = ProfileForm(instance=request.user.profile)
+            user = request.user
+            notes = Notes.objects.get(user=user).notes_field
+            Notes.objects.all().delete()
+            return render(request, 'profile.html', {
+                'user_form': user_form,
+                'profile_form': profile_form,
+                'notes': notes
+            })
+        if Choices.objects.filter(user=request.user).exists():
+            user_form = UserForm(instance=request.user)
+            profile_form = ProfileForm(instance=request.user.profile)
+            user = request.user
+            choice = Choices.objects.get(user=user)
+            Choices.objects.all().delete()
+            return render(request, 'profile.html', {
+                'choice': choice,
+                'user_form': user_form,
+                'profile_form': profile_form,
+            })
+
+        if not Choices.objects.filter(user=request.user).exists() and not Notes.objects.filter(user=request.user).exists():
+            user_form = UserForm(instance=request.user)
+            profile_form = ProfileForm(instance=request.user.profile)
+            return render(request, 'profile.html', {
+                'user_form': user_form,
+                'profile_form': profile_form,
+            })

@@ -10,10 +10,13 @@ class Notes(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     notes_field = models.TextField('notes field', max_length=3000)
 
-
 class Choices(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     choice_fields = models.IntegerField(choices=CHOICES, default=1)
+
+    def __unicode__(self):
+        #TODO: (change it)
+        return CHOICES[self.choice_fields][1]
 
 
 class Profile(models.Model):

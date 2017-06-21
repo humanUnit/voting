@@ -4,6 +4,14 @@
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/login.css" type="text/css" media="screen, print" />
 <style>
+
+        .table{padding: 10px;}
+        .btn {
+            padding: 1px 5px;
+            font-size: 15px;
+            line-height: 1.5;
+            border-radius: 3px;
+        }
         .choices_list ul{list-style:none;
         color:#0C3C26;}
         body {
@@ -14,7 +22,7 @@
                 background-color: #44B78B;
                 border-color: #fff;
                 }
-        .nav{background-color: #0C3C26;
+        .nav{
          margin: 0 auto;}
         .container-fluid {background-color: #0C3C26;}
         .navbar-header div{background-color: #0C3C26;}
@@ -64,7 +72,9 @@
       <a class="navbar-brand" href="#" style="color:#fff;">Birthday Voting</a>
     </div>
      <ul class="nav navbar-nav">
-      <li><a href="#" style="color:#fff;">Admin</a></li>
+      <li><a style="color:#fff" href="{% url 'polls:voting'%}">Voting</a></li>
+      <li><a style="color:#fff" href="{% url 'polls:notes'%}" style="color:#fff">Notes</a></li>
+      <li class="active"><a href="{% url 'polls:admin'%}" style="color:#44B78B">Admin</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li><a href="{% url 'polls:profile'%}" style="color:#fff;">{{ user.username }}</a></li>
@@ -77,14 +87,34 @@
 </nav>
 <div class="copy-banner">
       <div class="container">
-          <h1>Thank You Page</h1>
+          <h1>Admin Page</h1>
       </div>
 </div>
-    <h1 class="text-center" style="margin-top:10%; color:#0C3C26;">Thank you for your voting {{ user.username }}!</h1>
-    <p class="text-center" style="color:#44B78B">(If you are seeing this page, it is mean you already made your choice and notifications will sent to all members of Ukraine's office)</p>
-    <div class="form-group">
-        <div style="margin-top:15%"  class="col-md-offset-5">
-            <button class="btn btn-primary" type="submit" style="width:20%;">Logout</button>
-        </div>
-    </div>
+    <form style="padding: 2%;">
+        {% csrf_token %}
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="#">Users</a></li>
+            <li role="presentation"><a href="#">Settings</a></li>
+        </ul>
+        <table class="table">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Email</th>
+            <th>Last Activity</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+        <tr>
+            <td><a href="{% url 'polls:profile'%}">{{user}}</a></td>
+            <td>{{user.email}}</td>
+            <td>{{last_seen}}</td>
+            <td><a href="{% url 'polls:delete_user' user.id %}" style="width: 70px; height: 30px;" class="btn btn-xs btn-success">Delete</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+    </form>
 {% endblock %}

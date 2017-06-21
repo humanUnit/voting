@@ -70,7 +70,7 @@
     <ul class="nav navbar-nav">
       <li class="active"><a style="color:#44B78B" href="{% url 'polls:voting'%}">Voting</a></li>
       <li><a href="{% url 'polls:notes'%}" style="color:#fff">Notes</a></li>
-      <li><a href="#" style="color:#fff">Admin</a></li>
+      <li><a href="{% url 'polls:admin'%}" style="color:#fff">Admin</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li><a href="{% url 'polls:profile'%}" style="color:#fff">{{ user.username }}</a></li>

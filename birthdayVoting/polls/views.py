@@ -1,13 +1,16 @@
 # coding=utf-8
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.checks import messages
 from django.core.mail import EmailMessage
 from django.db import transaction
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
 from django.urls import reverse
 from django.contrib.auth import authenticate, login
+
 from .models import Choices, Notes
 from .forms import BirthdayVoteForm, BirthdayNoteForm, UserRegistrationForm, UserForm, ProfileForm
 
@@ -156,8 +159,6 @@ def update_profile(request):
             user = request.user
             choice = Choices.objects.get(user=user)
             notes = Notes.objects.get(user=user)
-            Choices.objects.all().delete()
-            Notes.objects.all().delete()
             return render(request, 'profile.html', {
                 'choice': choice,
                 'notes': notes,
@@ -170,7 +171,6 @@ def update_profile(request):
             profile_form = ProfileForm(instance=request.user.profile)
             user = request.user
             notes = Notes.objects.get(user=user).notes_field
-            Notes.objects.all().delete()
             return render(request, 'profile.html', {
                 'user_form': user_form,
                 'profile_form': profile_form,
@@ -181,17 +181,58 @@ def update_profile(request):
             profile_form = ProfileForm(instance=request.user.profile)
             user = request.user
             choice = Choices.objects.get(user=user)
-            Choices.objects.all().delete()
             return render(request, 'profile.html', {
                 'choice': choice,
                 'user_form': user_form,
                 'profile_form': profile_form,
             })
 
-        if not Choices.objects.filter(user=request.user).exists() and not Notes.objects.filter(user=request.user).exists():
+        if not Choices.objects.filter(user=request.user).exists() and not Notes.objects.filter(
+                user=request.user).exists():
             user_form = UserForm(instance=request.user)
             profile_form = ProfileForm(instance=request.user.profile)
             return render(request, 'profile.html', {
                 'user_form': user_form,
                 'profile_form': profile_form,
             })
+
+
+@login_required
+def get_admin(request):
+    users = User.objects.order_by('username')
+    user = request.user
+    last_seen = user.last_login.date()
+    return render(request, 'admin.html', {
+        'users': users,
+        'last_seen': last_seen,
+    })
+
+
+@login_required
+def delete_user(request, user_id):
+    if request.user.id == int(user_id):
+        return HttpResponseRedirect(reverse('polls:admin'))
+    if request.user.id != int(user_id):
+        try:
+            User.objects.get(id=user_id).delete()
+            return HttpResponseRedirect(reverse('polls:admin'))
+        except:
+            pass
+    return render(request, 'admin.html')
+
+
+@login_required
+def delete_choice(request):
+    try:
+        Choices.objects.get(user=request.user).delete()
+    except:
+        pass
+    return HttpResponseRedirect(reverse('polls:profile'))
+
+@login_required
+def delete_notes(request):
+    try:
+        Notes.objects.get(user=request.user).delete()
+    except:
+        pass
+    return HttpResponseRedirect(reverse('polls:profile'))

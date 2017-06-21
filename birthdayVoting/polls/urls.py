@@ -18,6 +18,13 @@ urlpatterns = [
 
     url(r'^thank_you/$', views.get_thank_you_page, name='thank_you'),
 
-    url(r'^profile/$', views.update_profile, name='profile')
+    url(r'^profile/$', views.update_profile, name='profile'),
 
+    url(r'^admin/$', views.get_admin, name='admin'),
+
+    url(r'^delete_user/(?P<user_id>\d+)/$', views.delete_user, name='delete_user'),
+
+    url(r'^delete_choice/$', views.delete_choice, name='delete_choice'),
+
+    url(r'^delete_notes/$', views.delete_notes, name='delete_notes'),
 ]

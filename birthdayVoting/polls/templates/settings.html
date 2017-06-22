@@ -4,7 +4,6 @@
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/login.css" type="text/css" media="screen, print" />
 <style>
-
         .table{padding: 10px;}
         .btn {
             padding: 1px 5px;
@@ -93,28 +92,17 @@
     <form style="padding: 2%;">
         {% csrf_token %}
         <ul class="nav nav-tabs">
-            <li role="presentation" class="active"><a href="{% url 'polls:admin'%}">Users</a></li>
-            <li role="presentation"><a href="{% url 'polls:settings'%}">Settings</a></li>
+            <li role="presentation"><a href="{% url 'polls:admin'%}">Users</a></li>
+            <li role="presentation" class="active"><a href="{% url 'polls:settings' %}">Settings</a></li>
         </ul>
-        <table class="table">
-    <thead>
-        <tr>
-            <th>User</th>
-            <th>Email</th>
-            <th>Last Activity</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for user in users %}
-        <tr>
-            <td><a href="{% url 'polls:profile'%}">{{user}}</a></td>
-            <td>{{user.email}}</td>
-            <td>{{last_seen}}</td>
-            <td><a href="{% url 'polls:delete_user' user.id %}" style="width: 55px; height: 25px;" class="btn btn-xs btn-success">Delete</a></td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+        <button><a href="{% url 'polls:create_notes'%}">Create notes field</a></button>
+        {% for note in notes%}
+        <div class="form-group">
+            <li class="col-md-offset-1" style="margin-top:10px; list-style: none;">
+                <textarea id="{{ field.name }}" class="form-control input-sm" name="{{ field.name }}">{{note}}</textarea>
+            </li>
+        </div>
+        <button><a href="{% url 'polls:delete_notes_field'%}">Delete</a></button>
+        {% endfor %}
     </form>
 {% endblock %}

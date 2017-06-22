@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.core.checks import messages
 from django.core.mail import EmailMessage
 from django.db import transaction
-from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
@@ -229,6 +228,7 @@ def delete_choice(request):
         pass
     return HttpResponseRedirect(reverse('polls:profile'))
 
+
 @login_required
 def delete_notes(request):
     try:
@@ -236,3 +236,26 @@ def delete_notes(request):
     except:
         pass
     return HttpResponseRedirect(reverse('polls:profile'))
+
+
+@login_required
+def get_settings(request):
+    return render(request, 'settings.html', {
+        'notes': Notes.objects.all(),
+    })
+
+@login_required
+def create_notes_field(request):
+    Notes.objects.create()
+    if request.POST:
+        Notes.objects.create(notes_field=request.POST.get('notes'), user=request.user)
+    return render(request, 'notes_form.html', {
+            'notes': Notes.objects.all(),
+        })
+
+@login_required
+def delete_notes_field(request):
+    Notes.objects.all().delete()
+    return render(request, 'settings.html', {
+        'notes': Notes.objects.all(),
+    })

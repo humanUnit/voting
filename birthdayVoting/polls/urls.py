@@ -27,4 +27,11 @@ urlpatterns = [
     url(r'^delete_choice/$', views.delete_choice, name='delete_choice'),
 
     url(r'^delete_notes/$', views.delete_notes, name='delete_notes'),
+
+    url(r'^settings/$', views.get_settings, name='settings'),
+
+    url(r'^create_notes/$', views.create_notes_field, name='create_notes'),
+
+    url(r'^delete_notes_field/$', views.delete_notes_field, name='delete_notes_field'),
+
 ]

@@ -8,7 +8,8 @@ from django.contrib.auth.models import User
 
 class Notes(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
-    notes_field = models.TextField('notes field', max_length=3000)
+    notes_field = models.TextField('notes field', max_length=3000,)
+
 
 class Choices(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

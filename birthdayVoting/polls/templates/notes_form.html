@@ -100,6 +100,14 @@
                                 {{ field.errors }}
                                 <textarea id="{{ field.name }}" class="form-control input-sm" name="{{ field.name }}"></textarea>
                                 {% endfor %}
+
+                                {% for note in notes%}
+        <div class="form-group">
+            <li class="col-md-offset-1" style="margin-top:10px; list-style: none;">
+                <textarea id="{{ field.name }}" class="form-control input-sm" name="{{ field.name }}">{{note}}</textarea>
+            </li>
+        </div>
+        {% endfor %}
                             </div>
                             <div style="margin-top:10px" class="form-group">
                                  <div style="margin-top:40px" class="col-sm-9 col-md-offset-4">

@@ -86,7 +86,8 @@
           <h1>Notes Page</h1>
       </div>
 </div>
-        <div style="margin-top:5%;" class="col-md-6 col-md-offset-3">
+<div class="container">
+        <div style="margin-top:5%;" class="col-md-8 col-md-offset-2">
         <h3 class="text-center" style="margin-top:5%; color:#0C3C26;">Please add notes if you have any suggestion about your choice</h3>
             <p class="text-center" style="color:#44B78B">(Here you can add theme of your party or write which gift you prefer to receive on your birthday,
                 also specify date and time.)</p>
@@ -104,7 +105,7 @@
                                 {% for note in notes%}
         <div class="form-group">
             <li class="col-md-offset-1" style="margin-top:10px; list-style: none;">
-                <textarea id="{{ field.name }}" class="form-control input-sm" name="{{ field.name }}">{{note}}</textarea>
+                <textarea id="{{ field.aname }}" class="form-control input-sm" name="{{ field.aname }}">{{note}}</textarea>
             </li>
         </div>
         {% endfor %}
@@ -117,4 +118,5 @@
                         </div>
             </form>
         </div>
+    </div>
 {% endblock %}

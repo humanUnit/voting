@@ -89,6 +89,7 @@
           <h1>Admin Page</h1>
       </div>
 </div>
+<div class="container">
     <form style="padding: 2%;">
         {% csrf_token %}
         <ul class="nav nav-tabs">
@@ -105,4 +106,5 @@
         <button><a href="{% url 'polls:delete_notes_field'%}">Delete</a></button>
         {% endfor %}
     </form>
+    </div>
 {% endblock %}

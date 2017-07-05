@@ -1,5 +1,8 @@
 Hi friend, we sent to you this letter because of one of your colleague's birthday. Here is choice which he did:
+
+
 {{choice}}
+
 {{notes}}
 
 Contact Name:
@@ -7,4 +10,8 @@ Contact Name:
 
 Email:
 {{ user.email}}
+
+
+Best,
+VotingAppTeam
 

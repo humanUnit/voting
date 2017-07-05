@@ -112,8 +112,12 @@ def get_notes(request):
                     "Someone's birthday soon",
                     content,
                     "Birthday voting" + '',
-                    to=['katyakelembet@gmail.com'],
-                    headers={'Reply-To': 'katyakelembet@gmail.com'}
+                    to=['yuriy.ovcharenko@castingnetworks.com', 'aleksander.sukharev@castingnetworks.com',
+                        'ruslan.nescheret@castingnetworks.com', 'ekaterina.kelembet@castingnetworks.com',
+                        'ihor.maslov@castingnetworks.com', 'oleksandr.yemets@castingnetworks.com',
+                        'sergii.kalinichenko@castingnetworks.com', 'vlad.tertyshnyi@castingnetworks.com',
+                        'andrey.makhonin@castingnetworks.com', 'maxim.tsapenko@castingnetworks.com'],
+                    headers={'Reply-To': 'votingappteam@gmail.com'}
                 )
                 email.send()
                 return HttpResponseRedirect(reverse('polls:thank_you'))
@@ -244,14 +248,16 @@ def get_settings(request):
         'notes': Notes.objects.all(),
     })
 
+
 @login_required
 def create_notes_field(request):
     Notes.objects.create()
     if request.POST:
         Notes.objects.create(notes_field=request.POST.get('notes'), user=request.user)
     return render(request, 'notes_form.html', {
-            'notes': Notes.objects.all(),
-        })
+        'notes': Notes.objects.all(),
+    })
+
 
 @login_required
 def delete_notes_field(request):

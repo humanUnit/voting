@@ -117,7 +117,9 @@
     {% endfor %}
     </tbody>
 </table>
+        {% if mm %}
+            <h1 class="text-center" style="margin-top:10%; color:#0C3C26">You can not delete another user profile</h1>
+        {% endif %}
     </form>
 </div>
-
 {% endblock %}

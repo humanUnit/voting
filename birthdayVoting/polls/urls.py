@@ -34,4 +34,6 @@ urlpatterns = [
 
     url(r'^delete_notes_field/$', views.delete_notes_field, name='delete_notes_field'),
 
+    url(r'^password_change/$', views.change_password, name='change_password'),
+
 ]

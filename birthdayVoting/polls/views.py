@@ -1,5 +1,6 @@
 # coding=utf-8
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 from django.core.checks import messages
 from django.core.mail import EmailMessage
@@ -8,7 +9,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
 from django.urls import reverse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, update_session_auth_hash
 
 from .models import Choices, Notes
 from .forms import BirthdayVoteForm, BirthdayNoteForm, UserRegistrationForm, UserForm, ProfileForm
@@ -214,13 +215,13 @@ def get_admin(request):
 @login_required
 def delete_user(request, user_id):
     if request.user.id == int(user_id):
+        User.objects.get(id=user_id).delete()
         return HttpResponseRedirect(reverse('polls:admin'))
     if request.user.id != int(user_id):
-        try:
-            User.objects.get(id=user_id).delete()
-            return HttpResponseRedirect(reverse('polls:admin'))
-        except:
-            pass
+        message = request.user.id
+        return render(request, 'admin.html', {
+            'mm': message,
+        })
     return render(request, 'admin.html')
 
 
@@ -264,4 +265,22 @@ def delete_notes_field(request):
     Notes.objects.all().delete()
     return render(request, 'settings.html', {
         'notes': Notes.objects.all(),
+    })
+
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.Info(request, 'Your password was successfully updated!')
+            return redirect('polls:change_password')
+        else:
+            messages.Error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'change_password.html', {
+        'form': form
     })

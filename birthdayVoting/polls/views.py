@@ -5,11 +5,14 @@ from django.contrib.auth.models import User
 from django.core.checks import messages
 from django.core.mail import EmailMessage
 from django.db import transaction
-from django.http import HttpResponseRedirect
+from django.forms import modelformset_factory
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, update_session_auth_hash
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 from .models import Choices, Notes
 from .forms import BirthdayVoteForm, BirthdayNoteForm, UserRegistrationForm, UserForm, ProfileForm
@@ -45,7 +48,7 @@ def get_voting(request):
                     'contact_name': user.username,
                     'contact_email': user.email,
                     'choice': Choices.objects.get(user=user).get_choice_fields_display(),
-                    'notes': Notes.objects.get(user=user).notes_field if Notes.objects.filter(
+                    'notes': Notes.objects.filter(user=user) if Notes.objects.filter(
                         user=user).exists() else 'User left field empty',
                 }
                 template = get_template('contact_template')
@@ -85,27 +88,27 @@ def get_choices(request):
 def get_notes(request):
     if Notes.objects.filter(user=request.user).exists():
         return HttpResponseRedirect(reverse('polls:notes_made'))
+    BirthdayNoteFormSet = modelformset_factory(Notes, BirthdayNoteForm, extra=1)
     if request.method == 'POST':
-        form = BirthdayNoteForm(request.POST)
-        if form.is_valid():
+        formset = BirthdayNoteFormSet(request.POST)
+        if formset.is_valid():
             if not Choices.objects.filter(user=request.user).exists():
-                notes = form.save(commit=False)
-                user = request.user
-                notes.user = user
-                notes.save()
+                notes = formset.save(commit=False)
+                for note in notes:
+                    user = request.user
+                    note.user = user
+                    note.save()
+                    print note.save()
                 return HttpResponseRedirect(reverse('polls:voting'))
             if Choices.objects.filter(user=request.user).exists():
-                notes = form.save(commit=False)
-                user = request.user
-                notes.user = user
-                notes.save()
+                formset.save()
                 template = get_template('contact_template')
                 user = request.user
                 context = {
                     'contact_name': user.username,
                     'contact_email': user.email,
                     'choice': Choices.objects.get(user=user).get_choice_fields_display(),
-                    'notes': Notes.objects.get(user=user).notes_field if Notes.objects.filter(
+                    'notes': Notes.objects.filter(user=user) if Notes.objects.filter(
                         user=user).exists() else 'User left field empty',
                 }
                 content = template.render(context, request)
@@ -113,18 +116,14 @@ def get_notes(request):
                     "Someone's birthday soon",
                     content,
                     "Birthday voting" + '',
-                    to=['yuriy.ovcharenko@castingnetworks.com', 'aleksander.sukharev@castingnetworks.com',
-                        'ruslan.nescheret@castingnetworks.com', 'ekaterina.kelembet@castingnetworks.com',
-                        'ihor.maslov@castingnetworks.com', 'oleksandr.yemets@castingnetworks.com',
-                        'sergii.kalinichenko@castingnetworks.com', 'vlad.tertyshnyi@castingnetworks.com',
-                        'andrey.makhonin@castingnetworks.com', 'maxim.tsapenko@castingnetworks.com'],
+                    to=['ekaterina.kelembet@castingnetworks.com', ],
                     headers={'Reply-To': 'votingappteam@gmail.com'}
                 )
                 email.send()
                 return HttpResponseRedirect(reverse('polls:thank_you'))
     else:
-        form = BirthdayNoteForm()
-    return render(request, 'notes_form.html', {'form': form})
+        formset = BirthdayNoteFormSet()
+    return render(request, 'notes_form.html', {'formset': formset})
 
 
 @login_required
@@ -162,7 +161,9 @@ def update_profile(request):
             profile_form = ProfileForm(instance=request.user.profile)
             user = request.user
             choice = Choices.objects.get(user=user)
-            notes = Notes.objects.get(user=user)
+            notes = Notes.objects.filter(user=user)
+            for note in notes:
+                print note.notes_field
             return render(request, 'profile.html', {
                 'choice': choice,
                 'notes': notes,
@@ -174,7 +175,9 @@ def update_profile(request):
             user_form = UserForm(instance=request.user)
             profile_form = ProfileForm(instance=request.user.profile)
             user = request.user
-            notes = Notes.objects.get(user=user).notes_field
+            notes = Notes.objects.filter(user=user)
+            for note in notes:
+                print note.notes_field
             return render(request, 'profile.html', {
                 'user_form': user_form,
                 'profile_form': profile_form,
@@ -237,7 +240,7 @@ def delete_choice(request):
 @login_required
 def delete_notes(request):
     try:
-        Notes.objects.get(user=request.user).delete()
+        Notes.objects.filter(user=request.user).delete()
     except:
         pass
     return HttpResponseRedirect(reverse('polls:profile'))
@@ -254,33 +257,39 @@ def get_settings(request):
 def create_notes_field(request):
     Notes.objects.create()
     if request.POST:
-        Notes.objects.create(notes_field=request.POST.get('notes'), user=request.user)
-    return render(request, 'notes_form.html', {
-        'notes': Notes.objects.all(),
-    })
+        notes = Notes.objects.create(notes_field=request.POST.get('notes'), user=request.user)
+        return render(request, 'settings.html', {
+            'notes': notes,
+        })
+    return HttpResponseRedirect(reverse('polls:settings'))
 
 
 @login_required
-def delete_notes_field(request):
-    Notes.objects.all().delete()
-    return render(request, 'settings.html', {
-        'notes': Notes.objects.all(),
-    })
+def delete_notes_field(request, notes_id):
+    Notes.objects.get(id=notes_id).delete()
+    if request.POST:
+        notes = Notes.objects.all()
+        return render(request, 'settings.html', {
+            'notes': notes,
+        })
+    return HttpResponseRedirect(reverse('polls:settings'))
 
 
 @login_required
+@csrf_exempt
 def change_password(request):
-    if request.method == 'POST':
+    if request.is_ajax() and request.method == 'POST':
+        print request.user, request.POST
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
-            messages.Info(request, 'Your password was successfully updated!')
-            return redirect('polls:change_password')
+            # messages.Info(request, 'Your password was successfully updated!')
+            message = 'Your password was successfully updated!'
         else:
-            messages.Error(request, 'Please correct the error below.')
+            message = 'Form is invalid %s!' % form.errors
+
     else:
-        form = PasswordChangeForm(request.user)
-    return render(request, 'change_password.html', {
-        'form': form
-    })
+        message = 'Please correct the error below.'
+        # messages.Error(request, 'Please correct the error below.')
+    return HttpResponse(json.dumps({'data': message}), 'application/json')

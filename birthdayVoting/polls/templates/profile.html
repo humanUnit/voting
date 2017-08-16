@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
 {% block css %}
-    {{ block.super }}
+
+{{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/login.css" type="text/css" media="screen, print" />
 <style>
         body {
@@ -64,6 +65,42 @@
     </style>
 {% endblock %}
 
+
+{% block js %}
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#myBtn").click(function(){
+		$("#myModal").modal('show');
+	});
+	$("body").on("click", "#saveBtn", function(){
+	    $.ajax({
+	            url: "{% url 'polls:change_password' %}",
+	            method: 'POST',
+	            data: {
+	                old_password: $('#myModal').find('input[name="old_password"]').val(),
+	                new_password1: $('#myModal').find('input[name="new_password1"]').val(),
+	                new_password2: $('#myModal').find('input[name="new_password2"]').val(),
+	            }
+	      })
+          .done(function(data) {
+            console.log( "success", data );
+          })
+          .fail(function(data) {
+            console.log( "error", data );
+          })
+	    console.log('adasd')
+	if ($(data).val().length != 0) {
+                $("#myPopup").popup('show');
+                }
+	});
+
+});
+</script>
+
+{% endblock %}
+
+
 {% block content %}
 <nav class="navbar navbar-default">
   <div class="container-fluid">
@@ -91,6 +128,12 @@
       </div>
 </div>
 <div class="container">
+    {% if change_password %}
+     <div style="margin-top:35px;" id="myPopup" class="alert alert-success alert-dismissable">
+         <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+         <strong>Success!</strong> Password was changed success
+     </div>
+    {% endif %}
                 <div class="panel-body">
                     <h3 class="text-center">Edit user information</h3>
                     <form style="margin-top:35px" method="post">
@@ -124,11 +167,20 @@
                         {% if notes %}
                         <div class="form-group">
                              <li class="col-md-offset-1" style="margin-top:10px; list-style: none;">
-                                 {{notes}}
-                                 <a href="{% url 'polls:delete_notes'%} ">
-                                    <i class="glyphicon glyphicon-remove" style="color:black">
-                                </i>
-                                 </a>
+                                <table style="margin-top:3%;" class="table">
+                                <tbody>
+                                {% for note in notes %}
+                                    <tr>
+                                        <td>{{note.notes_field}}
+                                            <a href="{% url 'polls:delete_notes'%} ">
+                                                <i class="glyphicon glyphicon-remove" style="color:black">
+                                                </i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                                 </table>
                                  </li>
                           </div>
                          {% endif %}
@@ -143,8 +195,37 @@
                                  </li>
                           </div>
                         {% endif %}
+                        <div class="form-group">
+                            <div style="margin-top:30px" class="col-md-offset-1">
+                                <a id="myBtn" href="#" class="btn btn-primary" style="width:14%;">Change password</a>
+                            </div>
+                            <!-- Modal HTML -->
+                            <div id="myModal" class="modal fade">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title">Change password</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <label for="old_password">Old password:</label>
+                                            <input name="old_password" type="password" class="form-control">
+                                            <label for="new_password1">New password:</label>
+                                            <input name="new_password1" type="password" class="form-control">
+                                            <label for="new_password2">New password confirmation:</label>
+                                            <input name="new_password2" type="password" class="form-control">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="button" id = "saveBtn" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                       <div  class="form-group">
-                            <div style="margin-top:20px " class="col-md-offset-5">
+                            <div style="margin-top:10px " class="col-md-offset-5">
                                 <button class="btn btn-primary" type="submit" style="margin-top:80px; width: 160px;">Save changes</button>
                             </div>
                         </div>

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load bootstrap3 %}
 
 {% block css %}
     {{ block.super }}
@@ -93,18 +94,28 @@
     <form style="padding: 2%;">
         {% csrf_token %}
         <ul class="nav nav-tabs">
-            <li role="presentation"><a href="{% url 'polls:admin'%}">Users</a></li>
+            <li role="presentation"><a style="color:#555;" href="{% url 'polls:admin'%}">Users</a></li>
             <li role="presentation" class="active"><a href="{% url 'polls:settings' %}">Settings</a></li>
         </ul>
-        <button><a href="{% url 'polls:create_notes'%}">Create notes field</a></button>
+        <div style="margin-top:20px;">
+        <button class="btn btn-primary" type="submit"><a style="color:#fff;" href="{% url 'polls:create_notes'%}">Create notes field</a></button>
+            </div>
+        <table class="table" style="margin-top:20px;">
+        <thead>
+        <tr>
+            <th>Notes field</th>
+            <th></th>
+        </tr>
+    </thead>
+        <tbody>
         {% for note in notes%}
-        <div class="form-group">
-            <li class="col-md-offset-1" style="margin-top:10px; list-style: none;">
-                <textarea id="{{ field.name }}" class="form-control input-sm" name="{{ field.name }}">{{note}}</textarea>
-            </li>
-        </div>
-        <button><a href="{% url 'polls:delete_notes_field'%}">Delete</a></button>
+        <tr>
+            <td>{{note}}</td>
+            <td><a href="{% url 'polls:delete_notes_field' notes_id=note.id %}" style="width: 55px; height: 25px; background-color: red; border-color: red;" class="btn btn-xs btn-success">Delete</a></td>
+        </tr>
         {% endfor %}
+        </tbody>
+        </table>
     </form>
     </div>
 {% endblock %}

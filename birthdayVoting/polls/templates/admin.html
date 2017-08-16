@@ -97,7 +97,7 @@
             <li role="presentation" class="active"><a href="{% url 'polls:admin'%}">Users</a></li>
             <li role="presentation"><a href="{% url 'polls:settings'%}">Settings</a></li>
         </ul>
-        <table class="table">
+        <table style="margin-top:3%;" class="table">
     <thead>
         <tr>
             <th>User</th>
@@ -107,6 +107,9 @@
         </tr>
     </thead>
     <tbody>
+    <div>
+    <h4 style="margin-top:2%;">Users</h4>
+    </div>
     {% for user in users %}
         <tr>
             <td><a href="{% url 'polls:profile'%}">{{user}}</a></td>
@@ -117,6 +120,32 @@
     {% endfor %}
     </tbody>
 </table>
+
+        <table style="margin-top:3%;" class="table">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Email</th>
+            <th>Last Activity</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    <div>
+    <h4 style="margin-top:2%;">Super Users</h4>
+    </div>
+    {% for user in users %}
+        <tr>
+            <td><a href="{% url 'polls:profile'%}">{{user}}</a></td>
+            <td>{{user.email}}</td>
+            <td>{{last_seen}}</td>
+            <td><a href="{% url 'polls:delete_user' user.id %}" style="width: 55px; height: 25px; background-color: red; border-color: red;" class="btn btn-xs btn-success">Delete</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
         {% if mm %}
             <h1 class="text-center" style="margin-top:10%; color:#0C3C26">You can not delete another user profile</h1>
         {% endif %}

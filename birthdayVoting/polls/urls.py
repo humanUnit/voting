@@ -32,8 +32,8 @@ urlpatterns = [
 
     url(r'^create_notes/$', views.create_notes_field, name='create_notes'),
 
-    url(r'^delete_notes_field/$', views.delete_notes_field, name='delete_notes_field'),
+    url(r'^delete_notes_field/(?P<notes_id>\d+)/$', views.delete_notes_field, name='delete_notes_field'),
 
-    url(r'^password_change/$', views.change_password, name='change_password'),
+    url(r'^change_password/$', views.change_password, name='change_password'),
 
 ]

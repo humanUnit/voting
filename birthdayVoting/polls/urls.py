@@ -36,4 +36,6 @@ urlpatterns = [
 
     url(r'^change_password/$', views.change_password, name='change_password'),
 
+    url(r'^create_choice/$', views.create_choice_field, name='create_choice'),
+
 ]

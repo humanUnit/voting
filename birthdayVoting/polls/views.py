@@ -14,7 +14,7 @@ from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.views.decorators.csrf import csrf_exempt
 import json
 
-from .models import Choices, Notes
+from .models import Choices, Notes, ChoicesCreate
 from .forms import BirthdayVoteForm, BirthdayNoteForm, UserRegistrationForm, UserForm, ProfileForm
 
 
@@ -44,11 +44,14 @@ def get_voting(request):
                 user = request.user
                 vote.user = user
                 vote.save()
+                notes = Notes.objects.filter(user=user)
+                for note in notes:
+                    print note.notes_field
                 context = {
                     'contact_name': user.username,
                     'contact_email': user.email,
                     'choice': Choices.objects.get(user=user).get_choice_fields_display(),
-                    'notes': Notes.objects.filter(user=user) if Notes.objects.filter(
+                    'notes': notes if Notes.objects.filter(
                         user=user).exists() else 'User left field empty',
                 }
                 template = get_template('contact_template')
@@ -101,14 +104,22 @@ def get_notes(request):
                     print note.save()
                 return HttpResponseRedirect(reverse('polls:voting'))
             if Choices.objects.filter(user=request.user).exists():
-                formset.save()
+                notes = formset.save(commit=False)
+                for note in notes:
+                    user = request.user
+                    note.user = user
+                    note.save()
+                    print note.save()
                 template = get_template('contact_template')
                 user = request.user
+                notes = Notes.objects.filter(user=user)
+                for note in notes:
+                    print note.notes_field
                 context = {
                     'contact_name': user.username,
                     'contact_email': user.email,
                     'choice': Choices.objects.get(user=user).get_choice_fields_display(),
-                    'notes': Notes.objects.filter(user=user) if Notes.objects.filter(
+                    'notes': notes if Notes.objects.filter(
                         user=user).exists() else 'User left field empty',
                 }
                 content = template.render(context, request)
@@ -240,10 +251,11 @@ def delete_choice(request):
 @login_required
 def delete_notes(request, notes_id):
     Notes.objects.get(id=notes_id).delete()
-    try:
-        Notes.objects.get(id=notes_id).delete()
-    except:
-        pass
+    if request.POST:
+        try:
+            Notes.objects.get(id=notes_id).delete()
+        except:
+            pass
     return HttpResponseRedirect(reverse('polls:profile'))
 
 
@@ -261,6 +273,20 @@ def create_notes_field(request):
         notes = Notes.objects.create(notes_field=request.POST.get('notes'), user=request.user)
         return render(request, 'settings.html', {
             'notes': notes,
+        })
+    return HttpResponseRedirect(reverse('polls:settings'))
+
+
+@login_required
+def create_choice_field(request):
+    ChoicesCreate.objects.create()
+    print ChoicesCreate.objects.all()
+    if request.POST:
+        choices = ChoicesCreate.objects.filter(user=user)
+        for choice in choices:
+            print choice.choice_field
+        return render(request, 'settings.html', {
+            'choices': choices,
         })
     return HttpResponseRedirect(reverse('polls:settings'))
 

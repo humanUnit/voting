@@ -25,3 +25,6 @@ class Profile(models.Model):
     birth_date = models.DateField(null=True, blank=True)
 
 
+class ChoicesCreate(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    choice_field = models.TextField('choice field', max_length=400)

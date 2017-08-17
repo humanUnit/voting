@@ -100,6 +100,9 @@
         <div style="margin-top:20px;">
         <button class="btn btn-primary" type="submit"><a style="color:#fff;" href="{% url 'polls:create_notes'%}">Create notes field</a></button>
             </div>
+        <div style="margin-top:20px;">
+        <button class="btn btn-primary" type="submit"><a style="color:#fff;" href="{% url 'polls:create_choice'%}">Create choice field</a></button>
+            </div>
         <table class="table" style="margin-top:20px;">
         <thead>
         <tr>
@@ -110,10 +113,11 @@
         <tbody>
         {% for note in notes%}
         <tr>
-            <td>{{note}}</td>
+            <td>{{note.label}}New notes field</td>
             <td><a href="{% url 'polls:delete_notes_field' notes_id=note.id %}" style="width: 55px; height: 25px; background-color: red; border-color: red;" class="btn btn-xs btn-success">Delete</a></td>
         </tr>
         {% endfor %}
+
         </tbody>
         </table>
     </form>

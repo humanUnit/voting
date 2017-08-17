@@ -3,7 +3,9 @@ Hi friend, we sent to you this letter because of one of your colleague's birthda
 
 {{choice}}
 
-{{notes}}
+{% for note in notes %}
+{{note.notes_field}}
+{% endfor %}
 
 Contact Name:
 {{ user.username }}

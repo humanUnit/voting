@@ -238,9 +238,10 @@ def delete_choice(request):
 
 
 @login_required
-def delete_notes(request):
+def delete_notes(request, notes_id):
+    Notes.objects.get(id=notes_id).delete()
     try:
-        Notes.objects.filter(user=request.user).delete()
+        Notes.objects.get(id=notes_id).delete()
     except:
         pass
     return HttpResponseRedirect(reverse('polls:profile'))

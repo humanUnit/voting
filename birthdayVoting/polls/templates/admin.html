@@ -97,6 +97,12 @@
             <li role="presentation" class="active"><a href="{% url 'polls:admin'%}">Users</a></li>
             <li role="presentation"><a href="{% url 'polls:settings'%}">Settings</a></li>
         </ul>
+        {% if mm %}
+            <div style="margin-top:2%;" class="alert alert-info">
+                <strong>You can not delete another user</strong>
+                <button class="close"><a href="{% url 'polls:admin'%}">&times;</a></button>
+            </div>
+        {% endif %}
         <table style="margin-top:3%;" class="table">
     <thead>
         <tr>
@@ -120,7 +126,6 @@
     {% endfor %}
     </tbody>
 </table>
-
         <table style="margin-top:3%;" class="table">
     <thead>
         <tr>
@@ -132,7 +137,7 @@
     </thead>
     <tbody>
     <div>
-    <h4 style="margin-top:2%;">Super Users</h4>
+    <h4 style="margin-top:2%;">Users</h4>
     </div>
     {% for user in users %}
         <tr>
@@ -144,11 +149,6 @@
     {% endfor %}
     </tbody>
 </table>
-
-
-        {% if mm %}
-            <h1 class="text-center" style="margin-top:10%; color:#0C3C26">You can not delete another user profile</h1>
-        {% endif %}
     </form>
 </div>
 {% endblock %}

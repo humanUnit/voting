@@ -172,7 +172,7 @@ $(document).ready(function(){
                                 {% for note in notes %}
                                     <tr>
                                         <td>{{note.notes_field}}
-                                            <a href="{% url 'polls:delete_notes'%} ">
+                                            <a href="{% url 'polls:delete_notes' notes_id=note.id %} ">
                                                 <i class="glyphicon glyphicon-remove" style="color:black">
                                                 </i>
                                             </a>

@@ -26,7 +26,7 @@ urlpatterns = [
 
     url(r'^delete_choice/$', views.delete_choice, name='delete_choice'),
 
-    url(r'^delete_notes/$', views.delete_notes, name='delete_notes'),
+    url(r'^delete_notes/(?P<notes_id>\d+)/$', views.delete_notes, name='delete_notes'),
 
     url(r'^settings/$', views.get_settings, name='settings'),
 

@@ -278,20 +278,6 @@ def create_notes_field(request):
 
 
 @login_required
-def create_choice_field(request):
-    ChoicesCreate.objects.create()
-    print ChoicesCreate.objects.all()
-    if request.POST:
-        choices = ChoicesCreate.objects.filter(user=user)
-        for choice in choices:
-            print choice.choice_field
-        return render(request, 'settings.html', {
-            'choices': choices,
-        })
-    return HttpResponseRedirect(reverse('polls:settings'))
-
-
-@login_required
 def delete_notes_field(request, notes_id):
     Notes.objects.get(id=notes_id).delete()
     if request.POST:

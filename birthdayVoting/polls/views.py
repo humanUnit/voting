@@ -14,7 +14,7 @@ from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.views.decorators.csrf import csrf_exempt
 import json
 
-from .models import Choices, Notes, ChoicesCreate
+from .models import Choices, Notes
 from .forms import BirthdayVoteForm, BirthdayNoteForm, UserRegistrationForm, UserForm, ProfileForm
 
 
@@ -156,9 +156,10 @@ def get_thank_you_page(request, ):
 @login_required
 @transaction.atomic
 def update_profile(request):
+    user = request.user
     if request.method == 'POST':
-        user_form = UserForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, instance=request.user.profile)
+        user_form = UserForm(request.POST, instance=user)
+        profile_form = ProfileForm(request.POST, instance=user.profile)
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
@@ -167,10 +168,9 @@ def update_profile(request):
         else:
             messages.Error(request, 'Error')
     else:
-        if Choices.objects.filter(user=request.user).exists() and Notes.objects.filter(user=request.user).exists():
-            user_form = UserForm(instance=request.user)
-            profile_form = ProfileForm(instance=request.user.profile)
-            user = request.user
+        if Choices.objects.filter(user=user).exists() and Notes.objects.filter(user=user).exists():
+            user_form = UserForm(instance=user)
+            profile_form = ProfileForm(instance=user.profile)
             choice = Choices.objects.get(user=user)
             notes = Notes.objects.filter(user=user)
             for note in notes:
@@ -182,10 +182,9 @@ def update_profile(request):
                 'profile_form': profile_form,
             })
 
-        if Notes.objects.filter(user=request.user).exists():
-            user_form = UserForm(instance=request.user)
-            profile_form = ProfileForm(instance=request.user.profile)
-            user = request.user
+        if Notes.objects.filter(user=user).exists():
+            user_form = UserForm(instance=user)
+            profile_form = ProfileForm(instance=user.profile)
             notes = Notes.objects.filter(user=user)
             for note in notes:
                 print note.notes_field
@@ -194,10 +193,9 @@ def update_profile(request):
                 'profile_form': profile_form,
                 'notes': notes
             })
-        if Choices.objects.filter(user=request.user).exists():
-            user_form = UserForm(instance=request.user)
-            profile_form = ProfileForm(instance=request.user.profile)
-            user = request.user
+        if Choices.objects.filter(user=user).exists():
+            user_form = UserForm(instance=user)
+            profile_form = ProfileForm(instance=user.profile)
             choice = Choices.objects.get(user=user)
             return render(request, 'profile.html', {
                 'choice': choice,
@@ -206,7 +204,7 @@ def update_profile(request):
             })
 
         if not Choices.objects.filter(user=request.user).exists() and not Notes.objects.filter(
-                user=request.user).exists():
+                user=user).exists():
             user_form = UserForm(instance=request.user)
             profile_form = ProfileForm(instance=request.user.profile)
             return render(request, 'profile.html', {
@@ -228,13 +226,21 @@ def get_admin(request):
 
 @login_required
 def delete_user(request, user_id):
+    user = request.user
+    if user.is_superuser:
+        User.objects.get(id=user_id).delete()
+        return HttpResponseRedirect(reverse('polls:admin'))
     if request.user.id == int(user_id):
         User.objects.get(id=user_id).delete()
         return HttpResponseRedirect(reverse('polls:admin'))
-    if request.user.id != int(user_id):
+    if request.user.id != int(user_id) and not user.is_superuser:
         message = request.user.id
+        users = User.objects.order_by('username')
+        last_seen = user.last_login.date()
         return render(request, 'admin.html', {
             'mm': message,
+            'users': users,
+            'last_seen': last_seen,
         })
     return render(request, 'admin.html')
 

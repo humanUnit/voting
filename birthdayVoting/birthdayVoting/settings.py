@@ -126,7 +126,7 @@ USE_TZ = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'votingappteam@gmail.com'
-EMAIL_HOST_PASSWORD = 'tyz66666'
+EMAIL_HOST_PASSWORD = 'tyz123456789Q'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 

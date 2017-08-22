@@ -14,8 +14,8 @@ from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.views.decorators.csrf import csrf_exempt
 import json
 
-from .models import Choices, Notes
-from .forms import BirthdayVoteForm, BirthdayNoteForm, UserRegistrationForm, UserForm, ProfileForm
+from .models import Choices, Notes, ChoicesCreate
+from .forms import BirthdayVoteForm, BirthdayNoteForm, UserRegistrationForm, UserForm, ProfileForm, CreateChoiceForm
 
 
 def get_register(request):
@@ -257,40 +257,27 @@ def delete_choice(request):
 @login_required
 def delete_notes(request, notes_id):
     Notes.objects.get(id=notes_id).delete()
-    if request.POST:
-        try:
-            Notes.objects.get(id=notes_id).delete()
-        except:
-            pass
     return HttpResponseRedirect(reverse('polls:profile'))
 
 
 @login_required
 def get_settings(request):
     return render(request, 'settings.html', {
+        'choice_form': CreateChoiceForm(request.POST, request.user),
         'notes': Notes.objects.all(),
+        'choice_field': ChoicesCreate.objects.all(),
     })
 
 
 @login_required
 def create_notes_field(request):
     Notes.objects.create()
-    if request.POST:
-        notes = Notes.objects.create(notes_field=request.POST.get('notes'), user=request.user)
-        return render(request, 'settings.html', {
-            'notes': notes,
-        })
     return HttpResponseRedirect(reverse('polls:settings'))
 
 
 @login_required
 def delete_notes_field(request, notes_id):
     Notes.objects.get(id=notes_id).delete()
-    if request.POST:
-        notes = Notes.objects.all()
-        return render(request, 'settings.html', {
-            'notes': notes,
-        })
     return HttpResponseRedirect(reverse('polls:settings'))
 
 
@@ -312,3 +299,33 @@ def change_password(request):
         message = 'Please correct the error below.'
         # messages.Error(request, 'Please correct the error below.')
     return HttpResponse(json.dumps({'data': message}), 'application/json')
+
+
+@login_required
+def save_choice_field(request):
+    choice_form = CreateChoiceForm(request.POST, request.user)
+    if choice_form.is_valid():
+        choice_form.save()
+        print choice_form.save()
+    return HttpResponseRedirect(reverse('polls:settings'))
+
+
+@login_required
+def create_choice_field(request):
+    ChoicesCreate.objects.create()
+    print ChoicesCreate.objects.all()
+    return HttpResponseRedirect(reverse('polls:settings'))
+
+
+@login_required
+def delete_choice_field(request, choice_id):
+    ChoicesCreate.objects.get(id=choice_id).delete()
+    return HttpResponseRedirect(reverse('polls:settings'))
+
+
+
+
+
+
+
+

@@ -121,8 +121,8 @@
         <tr>
             <td style="width:40%"><a href="{% url 'polls:profile'%}">{{user}}</a></td>
             <td>{{user.email}}</td>
-            <td>{{last_seen}}</td>
-            <td><a href="{% url 'polls:delete_user' user.id %}" style="width: 55px; height: 25px; background-color: red; border-color: red;" class="btn btn-xs btn-success">Delete</a></td>
+            <td style="width:20%">{{last_seen}}</td>
+            <td style="width:6%"><a href="{% url 'polls:delete_user' user.id %}" style="width: 55px; height: 25px; background-color: red; border-color: red;" class="btn btn-xs btn-success">Delete</a></td>
         </tr>
     {% endif %}
     {% endfor %}
@@ -147,7 +147,7 @@
                 <td style="width:40%"><a href="{% url 'polls:profile'%}">{{user}}</a></td>
                 <td>{{user.email}}</td>
                 <td>{{last_seen}}</td>
-                <td><a href="{% url 'polls:delete_user' user.id %}" style="width: 55px; height: 25px; background-color: red; border-color: red;" class="btn btn-xs btn-success">Delete</a></td>
+                <td style="width:6%"><a href="{% url 'polls:delete_user' user.id %}" style="width: 55px; height: 25px; background-color: red; border-color: red;" class="btn btn-xs btn-success">Delete</a></td>
             </tr>
     {% endif %}
     {% endfor %}

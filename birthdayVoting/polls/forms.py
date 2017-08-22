@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
 
-from .models import Notes, Choices, Profile
+from .models import Notes, Choices, Profile, ChoicesCreate
 
 
 class BirthdayVoteForm(ModelForm):
@@ -37,3 +37,10 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = ('birth_date',)
         widgets = {'birth_date': forms.SelectDateWidget(years=range(1970, 2010))}
+
+
+class CreateChoiceForm(forms.ModelForm):
+    class Meta:
+        model = ChoicesCreate
+        widgets = {'choice_field': forms.RadioSelect()}
+        fields = ('choice_field',)

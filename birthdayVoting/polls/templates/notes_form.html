@@ -108,7 +108,6 @@
                 <input type="hidden" name="next" value="{{ next }}" />
                         <div class="col-md-offset-0 col-md-6">
                             <div class="form-group">
-                                {% csrf_token %}
                                 {% bootstrap_formset formset layout='horizontal' %}
                             </div>
                         </div>

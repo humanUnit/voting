@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 {% load bootstrap3 %}
 
 {% block css %}
@@ -62,6 +63,48 @@
             padding: 0px 0 6px;
             margin: .45em 0 .35em;
         }
+        .form-control {
+        width: 60%;}
+        textarea.form-control {
+        height: 30px;
+        }
+
+
+
+	/* flip the pane when hovered */
+	.flip-container:hover .flipper, .flip-container.hover .flipper {
+		transform: rotateY(180deg);
+	}
+
+
+/* flip speed goes here */
+.flipper {
+	transition: 0.6s;
+	transform-style: preserve-3d;
+
+	position: relative;
+}
+
+/* hide back of pane during swap */
+.front, .back {
+	backface-visibility: hidden;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/* front pane, placed above back */
+.front {
+	z-index: 2;
+	/* for firefox 31 */
+	transform: rotateY(0deg);
+}
+
+/* back, initially hidden pane */
+.back {
+	transform: rotateY(180deg);
+}
     </style>
 {% endblock %}
 
@@ -138,7 +181,27 @@
         {% endfor %}
         </tbody>
         </table>
-        {{ choice_form }}
+
+        <div class="col-md-offset-0 col-md-6">
+                            <div class="form-group">
+                                {% bootstrap_formset formset layout='horizontal' %}
+                            </div>
+                        </div>
+        <div style="margin-top:40px; width:50%" class="col-sm-9 col-md-offset-5">
+            <button class="btn btn-primary" type="submit" style="width:30%;">Submit</button>
+        </div>
     </form>
     </div>
+
+
+<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+	<div class="flipper">
+		<div class="front">
+			<h4>1</h4>
+		</div>
+		<div class="back">
+			<h4>2</h4>
+		</div>
+	</div>
+</div>
 {% endblock %}

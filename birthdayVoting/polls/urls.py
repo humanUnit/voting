@@ -39,6 +39,4 @@ urlpatterns = [
     url(r'^create_choice_field/$', views.create_choice_field, name='create_choice_field'),
 
     url(r'^delete_choice_field/(?P<choice_id>\d+)/$$', views.delete_choice_field, name='delete_choice_field'),
-
-    url(r'^save_choice_field/$', views.save_choice_field, name='save_choice_field'),
 ]

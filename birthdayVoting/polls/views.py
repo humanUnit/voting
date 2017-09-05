@@ -262,10 +262,24 @@ def delete_notes(request, notes_id):
 
 @login_required
 def get_settings(request):
+    CreateChoiceFormSet = modelformset_factory(ChoicesCreate, CreateChoiceForm, extra=1)
+    if request.method == 'POST':
+        formset = CreateChoiceFormSet(request.POST)
+        if formset.is_valid():
+            choices = formset.save(commit=False)
+            for choice in choices:
+                user = request.user
+                choice.user = user
+                choice.save()
+                print choice.save()
+                print ChoicesCreate.objects.all()
+    else:
+        formset = CreateChoiceFormSet()
     return render(request, 'settings.html', {
         'choice_form': CreateChoiceForm(request.POST, request.user),
         'notes': Notes.objects.all(),
         'choice_field': ChoicesCreate.objects.all(),
+        'formset': formset
     })
 
 
@@ -299,15 +313,6 @@ def change_password(request):
         message = 'Please correct the error below.'
         # messages.Error(request, 'Please correct the error below.')
     return HttpResponse(json.dumps({'data': message}), 'application/json')
-
-
-@login_required
-def save_choice_field(request):
-    choice_form = CreateChoiceForm(request.POST, request.user)
-    if choice_form.is_valid():
-        choice_form.save()
-        print choice_form.save()
-    return HttpResponseRedirect(reverse('polls:settings'))
 
 
 @login_required

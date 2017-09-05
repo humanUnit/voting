@@ -42,5 +42,4 @@ class ProfileForm(forms.ModelForm):
 class CreateChoiceForm(forms.ModelForm):
     class Meta:
         model = ChoicesCreate
-        widgets = {'choice_field': forms.RadioSelect()}
         fields = ('choice_field',)
